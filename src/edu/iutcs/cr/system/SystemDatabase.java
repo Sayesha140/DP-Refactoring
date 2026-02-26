@@ -15,38 +15,46 @@ import static java.util.Objects.isNull;
  * @since 4/19/2024
  */
 public class SystemDatabase implements Serializable {
-
-    private Set<Buyer> buyers;
-    private Set<Seller> sellers;
-    private Set<Vehicle> vehicles;
-    private Set<Invoice> invoices;
-
     private static SystemDatabase instance;
 
-    private SystemDatabase() {
-        DataStore dataStore = new DataStore();
+    private final Set<Buyer> buyers;
+    private final Set<Seller> sellers;
+    private final Set<Vehicle> vehicles;
+    private final Set<Invoice> invoices;
 
-        buyers = dataStore.loadBuyers();
-        sellers = dataStore.loadSellers();
-        vehicles = dataStore.loadVehicles();
-        invoices = dataStore.loadInvoices();
+    private final DataStoreFactory factory;
+
+    // Add these two service references
+    private transient DatabaseDisplayService displayService;
+    private transient DatabaseSearchService searchService;
+
+    private SystemDatabase() {
+        this.factory = DataStoreFactory.getInstance();
+
+        this.buyers = factory.load(DataStoreFactory.BUYERS_FILE);
+        this.sellers = factory.load(DataStoreFactory.SELLERS_FILE);
+        this.vehicles = factory.load(DataStoreFactory.VEHICLES_FILE);
+        this.invoices = factory.load(DataStoreFactory.INVOICES_FILE);
+
+        // Initialize services
+        this.displayService = new DatabaseDisplayService(this);
+        this.searchService = new DatabaseSearchService(this);
     }
 
     public static SystemDatabase getInstance() {
         if (isNull(instance)) {
             instance = new SystemDatabase();
         }
-
         return instance;
     }
 
     public void saveSystem() {
-        DataStore dataStore = new DataStore();
-
-        dataStore.saveBuyers(buyers);
-        dataStore.saveSellers(sellers);
-        dataStore.saveVehicles(vehicles);
-        dataStore.saveInvoices(invoices);
+        System.out.println("Saving system data...");
+        factory.save(DataStoreFactory.BUYERS_FILE, buyers);
+        factory.save(DataStoreFactory.SELLERS_FILE, sellers);
+        factory.save(DataStoreFactory.VEHICLES_FILE, vehicles);
+        factory.save(DataStoreFactory.INVOICES_FILE, invoices);
+        System.out.println("System saved successfully!");
     }
 
     public Set<Buyer> getBuyers() {
@@ -65,85 +73,29 @@ public class SystemDatabase implements Serializable {
         return invoices;
     }
 
-    public void showInventory() {
-        if (vehicles.isEmpty()) {
-            System.out.println("No vehicles is present in system");
-            return;
-        }
-
-        for (Vehicle vehicle : vehicles) {
-            System.out.println(vehicle.toString());
-        }
+    // Add these methods for accessing services
+    public DatabaseDisplayService getDisplayService() {
+        return displayService;
     }
 
-    public void showBuyerList() {
-        if (buyers.isEmpty()) {
-            System.out.println("No buyer is present in system");
-            return;
-        }
-
-        for (Buyer buyer : buyers) {
-            System.out.println(buyer.toString());
-        }
+    public DatabaseSearchService getSearchService() {
+        return searchService;
     }
 
-    public void showSellerList() {
-        if (sellers.isEmpty()) {
-            System.out.println("No seller is present in system");
-            return;
-        }
-
-        for (Seller seller : sellers) {
-            System.out.println(seller.toString());
-        }
+    // Add these convenience methods
+    public void addBuyer(Buyer buyer) {
+        buyers.add(buyer);
     }
 
-    public void showInvoices() {
-        if(invoices.isEmpty()) {
-            System.out.println("No invoice found in system");
-            return;
-        }
-
-        for(Invoice invoice: invoices) {
-            invoice.printInvoice();
-            System.out.println("\n\n\n");
-        }
+    public void addSeller(Seller seller) {
+        sellers.add(seller);
     }
 
-    public Vehicle findVehicleByRegistrationNumber(String registrationNumber) {
-        Vehicle newVehicle = new Vehicle(registrationNumber);
-
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.equals(newVehicle)) {
-                return vehicle;
-            }
-        }
-
-        return null;
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
     }
 
-    public Buyer findBuyerById(String id) {
-        Buyer newBuyer = new Buyer(id);
-
-        for (Buyer buyer : buyers) {
-            if (buyer.equals(newBuyer)) {
-                return buyer;
-            }
-        }
-
-        return null;
-    }
-
-    public Seller findSellerById(String id) {
-        Seller newSeller = new Seller(id);
-
-        for (Seller seller : sellers) {
-            if (seller.equals(newSeller)) {
-                return seller;
-            }
-
-        }
-
-        return null;
+    public void addInvoice(Invoice invoice) {
+        invoices.add(invoice);
     }
 }
