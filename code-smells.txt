@@ -1,0 +1,21 @@
+invoice.java
+feature envy-mark car as unavailable (move method)
+large class- multiple responsibilities (extract class)
+primitive obsession-using Boolean for payment status instead of obj
+
+shoppingCart.java
+primitive obsession- using str for reg no
+duplicate code- multiple scanner obj creation
+
+systemDatabase.java
+feature envy- depends on other classes heavily
+long class- multiple responsibilities
+
+systemFlowRunner.java
+long method-run()
+conditional complexity
+large class- too many responsibilities
+
+scanner object creation duplicated across multiple classes
+validation logic almost identical acroos classes.
+using scanner directly in classes.
