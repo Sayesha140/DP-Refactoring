@@ -1,8 +1,6 @@
 package edu.iutcs.cr;
-
 import edu.iutcs.cr.handlers.*;
 import edu.iutcs.cr.system.SystemDatabase;
-
 
 /**
  * @author Raian Rahman
@@ -11,20 +9,21 @@ import edu.iutcs.cr.system.SystemDatabase;
 public class SystemFlowRunner {
     private final SystemDatabase database;
     private final MainMenu mainMenu;
-
-    private final PersonHandler personHandler;
-    private final VehicleHandler vehicleHandler;
-    private final DisplayHandler displayHandler;
-    private final OrderHandler orderHandler;
+    private final CommandFactory commandFactory;
 
     public SystemFlowRunner() {
         this.database = SystemDatabase.getInstance();
         this.mainMenu = new MainMenu();
 
-        this.personHandler = HandlerFactory.createPersonHandler(database);
-        this.vehicleHandler = HandlerFactory.createVehicleHandler(database);
-        this.displayHandler = HandlerFactory.createDisplayHandler(database);
-        this.orderHandler = HandlerFactory.createOrderHandler(database);
+        // Create handlers using factory
+        PersonHandler personHandler = HandlerFactory.createPersonHandler(database);
+        VehicleHandler vehicleHandler = HandlerFactory.createVehicleHandler(database);
+        DisplayHandler displayHandler = HandlerFactory.createDisplayHandler(database);
+        OrderHandler orderHandler = HandlerFactory.createOrderHandler(database);
+
+        // Create command factory with all handlers
+        this.commandFactory = new CommandFactory(database, personHandler, vehicleHandler,
+                displayHandler, orderHandler);
     }
 
     public static void run() {
@@ -40,54 +39,13 @@ public class SystemFlowRunner {
             while (true) {
                 System.out.println("\n\n\n");
                 int selectedOperation = mainMenu.showAndSelectOperation();
-
-                switch (selectedOperation) {
-                    case 1 -> {
-                        personHandler.addSeller();
-                        promptToViewMainMenu();
-                    }
-                    case 2 -> {
-                        personHandler.addBuyer();
-                        promptToViewMainMenu();
-                    }
-                    case 3 -> {
-                        vehicleHandler.addVehicle();
-                        promptToViewMainMenu();
-                    }
-                    case 4 -> {
-                        displayHandler.showInventory();
-                        promptToViewMainMenu();
-                    }
-                    case 5 -> {
-                        displayHandler.showSellers();
-                        promptToViewMainMenu();
-                    }
-                    case 6 -> {
-                        displayHandler.showBuyers();
-                        promptToViewMainMenu();
-                    }
-                    case 7 -> {
-                        orderHandler.createOrder();
-                    }
-                    case 8 -> {
-                        displayHandler.showInvoices();
-                        promptToViewMainMenu();
-                    }
-                    case 9 -> {
-                        database.saveSystem();
-                        ConsoleReader.close();
-                        System.out.println("Goodbye!");
-                        return;
-                    }
-                }
+                
+                Command command = commandFactory.getCommand(selectedOperation);
+                command.execute();
             }
         } catch (Exception e) {
             System.err.println("An error occurred: " + e.getMessage());
             ConsoleReader.close();
         }
-    }
-
-    private void promptToViewMainMenu() {
-        ConsoleReader.waitForInput("\n\nEnter 0 to view main menu: ");
     }
 }
