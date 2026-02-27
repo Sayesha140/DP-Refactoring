@@ -1,15 +1,13 @@
 package edu.iutcs.cr.handlers;
 
 import edu.iutcs.cr.system.SystemDatabase;
-import edu.iutcs.cr.utils.ConsoleReader;
+import edu.iutcs.cr.ConsoleReader;
 
 public class DisplayHandler {
     private final SystemDatabase database;
-    private final ConsoleReader reader;
 
-    public DisplayHandler(SystemDatabase database, ConsoleReader reader) {
+    public DisplayHandler(SystemDatabase database) {
         this.database = database;
-        this.reader = reader;
     }
 
     public void showInventory() {

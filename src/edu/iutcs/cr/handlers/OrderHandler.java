@@ -4,16 +4,14 @@ import edu.iutcs.cr.*;
 import edu.iutcs.cr.persons.Buyer;
 import edu.iutcs.cr.persons.Seller;
 import edu.iutcs.cr.system.SystemDatabase;
-import edu.iutcs.cr.utils.ConsoleReader;
+import edu.iutcs.cr.ConsoleReader;
 import edu.iutcs.cr.vehicles.Vehicle;
 
 public class OrderHandler {
     private final SystemDatabase database;
-    private final ConsoleReader reader;
 
-    public OrderHandler(SystemDatabase database, ConsoleReader reader) {
+    public OrderHandler(SystemDatabase database) {
         this.database = database;
-        this.reader = reader;
     }
 
     public void createOrder() {
@@ -29,7 +27,7 @@ public class OrderHandler {
             System.out.println();
             System.out.println("5. Return to main menu");
 
-            int operation = reader.readIntInRange("Enter your choice: ", 1, 5);
+            int operation = ConsoleReader.readIntInRange("Enter your choice: ", 1, 5);
 
             switch (operation) {
                 case 1 -> addItemToCart(cart);
@@ -47,7 +45,7 @@ public class OrderHandler {
     }
 
     private void addItemToCart(ShoppingCart cart) {
-        String regNumber = reader.readMandatoryString("Enter registration number of vehicle: ");
+        String regNumber = ConsoleReader.readMandatoryString("Enter registration number of vehicle: ");
         Vehicle vehicle = database.getSearchService().findVehicleByRegistrationNumber(regNumber);
 
         if (vehicle == null) {
@@ -65,7 +63,7 @@ public class OrderHandler {
     }
 
     private void removeItemFromCart(ShoppingCart cart) {
-        String regNumber = reader.readMandatoryString("Enter registration number of vehicle: ");
+        String regNumber = ConsoleReader.readMandatoryString("Enter registration number of vehicle: ");
         cart.removeItem(regNumber);
         System.out.println("Vehicle removed from cart!");
     }
@@ -74,7 +72,7 @@ public class OrderHandler {
         Buyer buyer = findBuyer();
         Seller seller = findSeller();
 
-        boolean isPaid = reader.readBoolean("Is payment done?");
+        boolean isPaid = ConsoleReader.readBoolean("Is payment done?");
         PaymentStatus paymentStatus = PaymentStatus.fromBoolean(isPaid);
 
         Invoice invoice = new Invoice(buyer, seller, cart, paymentStatus);
@@ -90,7 +88,7 @@ public class OrderHandler {
 
     private Buyer findBuyer() {
         while (true) {
-            String buyerId = reader.readMandatoryString("Enter buyer id: ");
+            String buyerId = ConsoleReader.readMandatoryString("Enter buyer id: ");
             Buyer buyer = database.getSearchService().findBuyerById(buyerId);
             if (buyer != null) {
                 return buyer;
@@ -101,7 +99,7 @@ public class OrderHandler {
 
     private Seller findSeller() {
         while (true) {
-            String sellerId = reader.readMandatoryString("Enter seller id: ");
+            String sellerId = ConsoleReader.readMandatoryString("Enter seller id: ");
             Seller seller = database.getSearchService().findSellerById(sellerId);
             if (seller != null) {
                 return seller;

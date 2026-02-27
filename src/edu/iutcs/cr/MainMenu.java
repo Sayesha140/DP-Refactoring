@@ -1,7 +1,5 @@
 package edu.iutcs.cr;
 
-import java.util.Scanner;
-
 /**
  * @author Raian Rahman
  * @since 4/19/2024
@@ -26,19 +24,7 @@ public class MainMenu {
     }
 
     public int showAndSelectOperation() {
-        Scanner scanner = new Scanner(System.in);
         showMenu();
-        int selectedOperation = -1;
-
-        while(selectedOperation<1 || selectedOperation>9) {
-            System.out.print("Enter your choice: ");
-            selectedOperation = scanner.nextInt();
-
-            if(selectedOperation<1 || selectedOperation>9) {
-                System.out.print("Enter a valid operation: ");
-            }
-        }
-
-        return selectedOperation;
+        return ConsoleReader.readIntInRange("Enter your choice: ", 1, 9);
     }
 }

@@ -2,22 +2,20 @@ package edu.iutcs.cr.handlers;
 
 import edu.iutcs.cr.persons.*;
 import edu.iutcs.cr.system.SystemDatabase;
-import edu.iutcs.cr.utils.ConsoleReader;
+import edu.iutcs.cr.ConsoleReader;
 
 public class PersonHandler {
     private final SystemDatabase database;
-    private final ConsoleReader reader;
 
-    public PersonHandler(SystemDatabase database, ConsoleReader reader) {
+    public PersonHandler(SystemDatabase database) {
         this.database = database;
-        this.reader = reader;
     }
 
     public void addSeller() {
         System.out.println("\n\n\nAdd new seller");
-        String name = reader.readMandatoryString("Enter name: ");
-        String id = reader.readMandatoryString("Enter id: ");
-        String email = reader.readMandatoryString("Enter email: ");
+        String name = ConsoleReader.readMandatoryString("Enter name: ");
+        String id = ConsoleReader.readMandatoryString("Enter id: ");
+        String email = ConsoleReader.readMandatoryString("Enter email: ");
 
         Seller seller = PersonFactory.createSeller(name, id, email);
         database.addSeller(seller);
@@ -26,9 +24,9 @@ public class PersonHandler {
 
     public void addBuyer() {
         System.out.println("\n\n\nAdd new customer");
-        String name = reader.readMandatoryString("Enter name: ");
-        String id = reader.readMandatoryString("Enter id: ");
-        String email = reader.readMandatoryString("Enter email: ");
+        String name = ConsoleReader.readMandatoryString("Enter name: ");
+        String id = ConsoleReader.readMandatoryString("Enter id: ");
+        String email = ConsoleReader.readMandatoryString("Enter email: ");
         PaymentMethod paymentMethod = readPaymentMethod();
 
         Buyer buyer = PersonFactory.createBuyer(name, id, email, paymentMethod);
@@ -41,7 +39,7 @@ public class PersonHandler {
         System.out.println("1. Cash");
         System.out.println("2. Card");
         System.out.println("3. Bank Transfer");
-        int choice = reader.readIntInRange("Enter your choice: ", 1, 3);
+        int choice = ConsoleReader.readIntInRange("Enter your choice: ", 1, 3);
 
         return switch (choice) {
             case 1 -> PaymentMethod.CASH;
