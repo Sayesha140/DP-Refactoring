@@ -39,7 +39,7 @@ public class SystemFlowRunner {
             while (true) {
                 System.out.println("\n\n\n");
                 int selectedOperation = mainMenu.showAndSelectOperation();
-                
+
                 Command command = commandFactory.getCommand(selectedOperation);
                 command.execute();
             }
