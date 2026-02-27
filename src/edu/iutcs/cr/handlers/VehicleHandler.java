@@ -3,6 +3,7 @@ package edu.iutcs.cr.handlers;
 import edu.iutcs.cr.system.SystemDatabase;
 import edu.iutcs.cr.ConsoleReader;
 import edu.iutcs.cr.vehicles.*;
+import edu.iutcs.cr.vehicles.VehicleFactory;
 
 public class VehicleHandler {
     private final SystemDatabase database;
@@ -14,8 +15,14 @@ public class VehicleHandler {
     public void addVehicle() {
         System.out.println("\n\n\nAdd new vehicle");
 
-        VehicleFactory.showVehicleTypes();
-        int vehicleType = ConsoleReader.readIntInRange("Enter your choice: ", 1, VehicleFactory.getTypeCount());
+        System.out.println("Please enter the type of vehicle [1-5]: ");
+        System.out.println("1. Bus");
+        System.out.println("2. Car");
+        System.out.println("3. Hatchback");
+        System.out.println("4. Sedan");
+        System.out.println("5. SUV");
+
+        int vehicleType = ConsoleReader.readIntInRange("Enter your choice: ", 1, 5);
 
         String regNum = ConsoleReader.readMandatoryString("Enter registration number: ");
         String make = ConsoleReader.readMandatoryString("Enter make: ");

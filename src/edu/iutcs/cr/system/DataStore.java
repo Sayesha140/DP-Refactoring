@@ -121,7 +121,7 @@ public class DataStore {
             System.err.println("Error loading from " + filename +
                     ", creating new empty set: " + e.getMessage());
             Set<T> emptySet = new HashSet<>();
-            saveToFile(emptySet, filename); // Create the file with empty set
+            saveToFile(emptySet, filename);
             return emptySet;
         }
     }

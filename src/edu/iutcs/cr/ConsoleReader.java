@@ -81,7 +81,7 @@ public class ConsoleReader {
         }
     }
 
-    // Optional: only if you need to close at app exit
+
     public static void close() {
         SCANNER.close();
     }

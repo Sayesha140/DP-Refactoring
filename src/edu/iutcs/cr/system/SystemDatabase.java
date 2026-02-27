@@ -24,8 +24,8 @@ public class SystemDatabase implements Serializable {
 
     private final DataStoreFactory factory;
 
-    // Add these two service references
-    private transient DatabaseDisplayService displayService;
+
+    private transient DatabaseDisplayService displayService; //dont save this field-non serializable
     private transient DatabaseSearchService searchService;
 
     private SystemDatabase() {
@@ -37,8 +37,8 @@ public class SystemDatabase implements Serializable {
         this.invoices = factory.load(DataStoreFactory.INVOICES_FILE);
 
         // Initialize services
-        this.displayService = new DatabaseDisplayService(this);
-        this.searchService = new DatabaseSearchService(this);
+        this.displayService = DisplayServiceFactory.createDisplayService(this);
+        this.searchService = SearchServiceFactory.createSearchService(this);
     }
 
     public static SystemDatabase getInstance() {
@@ -73,7 +73,7 @@ public class SystemDatabase implements Serializable {
         return invoices;
     }
 
-    // Add these methods for accessing services
+    //  for accessing services
     public DatabaseDisplayService getDisplayService() {
         return displayService;
     }

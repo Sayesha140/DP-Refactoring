@@ -2,7 +2,7 @@ package edu.iutcs.cr;
 
 import edu.iutcs.cr.handlers.*;
 import edu.iutcs.cr.system.SystemDatabase;
-import edu.iutcs.cr.ConsoleReader;
+
 
 /**
  * @author Raian Rahman
@@ -21,10 +21,10 @@ public class SystemFlowRunner {
         this.database = SystemDatabase.getInstance();
         this.mainMenu = new MainMenu();
 
-        this.personHandler = new PersonHandler(database);
-        this.vehicleHandler = new VehicleHandler(database);
-        this.displayHandler = new DisplayHandler(database);
-        this.orderHandler = new OrderHandler(database);
+        this.personHandler = HandlerFactory.createPersonHandler(database);
+        this.vehicleHandler = HandlerFactory.createVehicleHandler(database);
+        this.displayHandler = HandlerFactory.createDisplayHandler(database);
+        this.orderHandler = HandlerFactory.createOrderHandler(database);
     }
 
     public static void run() {
