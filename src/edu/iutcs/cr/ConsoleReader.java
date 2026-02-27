@@ -2,9 +2,6 @@ package edu.iutcs.cr;
 
 import java.util.Scanner;
 
-/**
- * YOUR utility class with single static scanner
- */
 public class ConsoleReader {
     private static final Scanner SCANNER = new Scanner(System.in);
 
