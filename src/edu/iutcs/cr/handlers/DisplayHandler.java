@@ -1,7 +1,6 @@
 package edu.iutcs.cr.handlers;
 
 import edu.iutcs.cr.system.SystemDatabase;
-import edu.iutcs.cr.ConsoleReader;
 
 public class DisplayHandler {
     private final SystemDatabase database;
